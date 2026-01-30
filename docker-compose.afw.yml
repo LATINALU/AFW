@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  afw-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: afw-backend
+    ports:
+      - "${AFW_BACKEND_PORT:-8002}:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - HOST=0.0.0.0
+      - PORT=8001
+      - PYTHONPATH=/app
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - DEBUG=${DEBUG:-false}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-afw_secret_key_2024_unique}
+      - JWT_ALGORITHM=HS256
+      - SESSION_SECRET=${SESSION_SECRET:-afw_session_secret_2024_unique}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-afw_encryption_key_2024_unique}
+      - API_SECRET_KEY=${API_SECRET_KEY:-afw_api_secret_2024_unique}
+      - REDIS_URL=redis://afw-redis:6379
+      - REDIS_KEY=${REDIS_KEY:-afw_redis_key_2024_unique}
+      - REDIS_HOST=afw-redis
+      - REDIS_PORT=6379
+      - FRONTEND_URL=http://${AFW_DOMAIN:-afw-app.duckdns.org}
+      - RATE_LIMIT_ENABLED=${RATE_LIMIT_ENABLED:-true}
+      - CORS_MAX_AGE=86400
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./backend:/app
+    networks:
+      - afw-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      afw-redis:
+        condition: service_healthy
+
+  afw-redis:
+    image: redis:7-alpine
+    container_name: afw-redis
+    ports:
+      - "${AFW_REDIS_PORT:-6380}:6379"
+    volumes:
+      - afw-redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - afw-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  afw-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: afw-frontend
+    ports:
+      - "${AFW_FRONTEND_PORT:-3002}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=http://${AFW_DOMAIN:-afw-app.duckdns.org}/api
+      - NEXT_PUBLIC_VERSION=${NEXT_PUBLIC_VERSION:-1.0.0}
+      - NEXT_PUBLIC_DEMO_MODE=${NEXT_PUBLIC_DEMO_MODE:-false}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      afw-backend:
+        condition: service_healthy
+    networks:
+      - afw-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  afw-redis-data:
+    driver: local
+
+networks:
+  afw-network:
+    driver: bridge
+    name: afw-network
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16

@@ -1,0 +1,29 @@
+FROM node:20-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat curl
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Development image
+FROM base AS dev
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Install Next.js globally for development
+RUN npm install -g next
+
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_API_URL=http://localhost:8001
+ENV NEXT_PUBLIC_VERSION=1.0.0
+
+EXPOSE 3000
+
+# Development command with hot reload
+CMD ["npm", "run", "dev"]

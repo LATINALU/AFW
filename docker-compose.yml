@@ -1,0 +1,118 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: atp-backend
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - HOST=0.0.0.0
+      - PORT=8001
+      - PYTHONPATH=/app
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-true}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-atp_secret_key_2024}
+      - JWT_ALGORITHM=HS256
+      - SESSION_SECRET=${SESSION_SECRET:-atp_session_secret_2024}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-atp_encryption_key_2024}
+      - API_SECRET_KEY=${API_SECRET_KEY:-atp_api_secret_2024}
+      - REDIS_URL=redis://redis:6379
+      - REDIS_KEY=${REDIS_KEY:-atp_redis_key_2024}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - RATE_LIMIT_ENABLED=${RATE_LIMIT_ENABLED:-true}
+      - CORS_MAX_AGE=86400
+    volumes:
+      - ./backend:/app
+      - ./backend/.env:/app/.env:ro
+    networks:
+      - atp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: atp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - atp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:8001}
+        - NEXT_PUBLIC_VERSION=${NEXT_PUBLIC_VERSION:-1.0.0}
+    container_name: atp-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:8001}
+      - NEXT_PUBLIC_VERSION=${NEXT_PUBLIC_VERSION:-1.0.0}
+      - NEXT_PUBLIC_DEMO_MODE=${NEXT_PUBLIC_DEMO_MODE:-false}
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - atp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:alpine
+    container_name: atp-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - atp-network
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  atp-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

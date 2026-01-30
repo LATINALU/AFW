@@ -1,0 +1,20 @@
+# ATP v0.9.0 - Agentic Task Platform
+# =====================================
+# NOTA: Para el backend principal, usar backend/requirements.txt
+# Este archivo es para desarrollo local sin Docker o módulos opcionales.
+
+# Core - LangGraph (motor de orquestación)
+langgraph>=0.2.0
+
+# LLM Provider - OpenAI SDK (compatible con Groq)
+openai>=2.9.0
+
+# Web Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+
+# Utilities
+python-dotenv==1.0.1
+pydantic>=2.9.0
+httpx>=0.28.0
+aiofiles>=24.1.0

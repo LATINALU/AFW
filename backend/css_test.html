@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html data-theme="executive">
+<head>
+    <title>ATP CSS Test</title>
+    <style>
+        /* Importar themes */
+        @import '/styles/themes.css';
+        
+        /* Test styles */
+        body {
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-card {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .test-button {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .test-button:hover {
+            opacity: 0.8;
+        }
+        
+        .theme-info {
+            text-align: center;
+            padding: 10px;
+            background: hsl(var(--muted));
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .color-preview {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-info">
+        <h1>🎨 ATP CSS Test - Executive Theme</h1>
+        <div class="color-preview">
+            <div class="color-dot" style="background: hsl(var(--primary))"></div>
+            <div class="color-dot" style="background: hsl(var(--accent))"></div>
+            <div class="color-dot" style="background: hsl(var(--background))"></div>
+        </div>
+    </div>
+    
+    <div class="test-card">
+        <h2 style="color: hsl(var(--primary))">Test Card</h2>
+        <p style="color: hsl(var(--foreground))">Este es un test de las variables CSS del tema EXECUTIVE.</p>
+        <button class="test-button">Botón Principal</button>
+        <button class="test-button" style="background: hsl(var(--secondary))">Botón Secundario</button>
+    </div>
+    
+    <div class="theme-info">
+        <p><strong>Variables CSS Activas:</strong></p>
+        <ul style="text-align: left; color: hsl(var(--muted-foreground));">
+            <li>Primary: hsl(var(--primary))</li>
+            <li>Background: hsl(var(--background))</li>
+            <li>Card: hsl(var(--card))</li>
+            <li>Border: hsl(var(--border))</li>
+        </ul>
+    </div>
+    
+    <script>
+        // Test de cambio de tema
+        const themes = ['executive', 'blueprint', 'iron-man', 'kawai', 'cyborg'];
+        let currentTheme = 0;
+        
+        document.addEventListener('click', () => {
+            currentTheme = (currentTheme + 1) % themes.length;
+            const newTheme = themes[currentTheme];
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.querySelector('h1').textContent = `🎨 ATP CSS Test - ${newTheme.toUpperCase()} Theme`;
+        });
+    </script>
+</body>
+</html>
+    

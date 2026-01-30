@@ -1,0 +1,201 @@
+/* ========================================
+   ATP - TEMAS REDISEÑADOS CON PALETAS PROFESIONALES
+   ======================================== */
+
+/* 1. CORPORATE - Paleta Profesional Azul/Gris */
+[data-theme="corporate"] {
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-border: #e1e8ed;
+  --color-primary: #0066cc;
+  --color-primary-hover: #0052a3;
+  --color-accent: #4a90e2;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+}
+
+/* 2. GAMER - Paleta Gaming RGB con Negro */
+[data-theme="gamer"] {
+  --color-background: #0a0e1a;
+  --color-surface: #141824;
+  --color-card: #1a1f2e;
+  --color-border: #2d3548;
+  --color-primary: #00ff88;
+  --color-primary-hover: #00cc6a;
+  --color-accent: #ff0080;
+  --color-text: #e0e0e0;
+  --color-text-muted: #9ca3af;
+  --color-success: #00ff88;
+  --color-warning: #ffaa00;
+  --color-error: #ff0055;
+}
+
+/* 3. MINIMALIST - Paleta Monocromática Elegante */
+[data-theme="minimalist"] {
+  --color-background: #fafafa;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-border: #e5e5e5;
+  --color-primary: #2d2d2d;
+  --color-primary-hover: #1a1a1a;
+  --color-accent: #666666;
+  --color-text: #1a1a1a;
+  --color-text-muted: #737373;
+  --color-success: #404040;
+  --color-warning: #595959;
+  --color-error: #1a1a1a;
+}
+
+/* 4. CYBORG - Paleta Cyberpunk Cyan/Magenta */
+[data-theme="cyborg"] {
+  --color-background: #0d0221;
+  --color-surface: #1a0b2e;
+  --color-card: #2d1b4e;
+  --color-border: #4a2c6d;
+  --color-primary: #00f0ff;
+  --color-primary-hover: #00d4e6;
+  --color-accent: #ff00ff;
+  --color-text: #e0e0ff;
+  --color-text-muted: #a78bfa;
+  --color-success: #00ff9f;
+  --color-warning: #ffaa00;
+  --color-error: #ff006e;
+}
+
+/* 5. FEMININE - Paleta Femenina Rosa/Lavanda */
+[data-theme="feminine"] {
+  --color-background: #fff5f7;
+  --color-surface: #ffffff;
+  --color-card: #fef3f5;
+  --color-border: #ffc2d1;
+  --color-primary: #ec4899;
+  --color-primary-hover: #db2777;
+  --color-accent: #f472b6;
+  --color-text: #1f1f1f;
+  --color-text-muted: #9f7aea;
+  --color-success: #a78bfa;
+  --color-warning: #fbbf24;
+  --color-error: #f43f5e;
+}
+
+/* 6. HACKER - Paleta Terminal CRT Verde */
+[data-theme="hacker"] {
+  --color-background: #0d0208;
+  --color-surface: #1a0f0a;
+  --color-card: #1e1410;
+  --color-border: #2d2416;
+  --color-primary: #00ff41;
+  --color-primary-hover: #00cc33;
+  --color-accent: #39ff14;
+  --color-text: #00ff41;
+  --color-text-muted: #00aa2b;
+  --color-success: #00ff41;
+  --color-warning: #ffff00;
+  --color-error: #ff0000;
+}
+
+/* 7. CRIMINALIST - Paleta Forense Sepia/Rojo */
+[data-theme="criminalist"] {
+  --color-background: #1a1410;
+  --color-surface: #2d2419;
+  --color-card: #3d3024;
+  --color-border: #4d3d2e;
+  --color-primary: #d4a574;
+  --color-primary-hover: #c4955e;
+  --color-accent: #dc143c;
+  --color-text: #f5e6d3;
+  --color-text-muted: #b8956a;
+  --color-success: #8b7355;
+  --color-warning: #ff6b35;
+  --color-error: #dc143c;
+}
+
+/* 8. EXECUTIVE - Paleta Lujo Oro/Negro */
+[data-theme="executive"] {
+  --color-background: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-card: #242424;
+  --color-border: #3d3d3d;
+  --color-primary: #d4af37;
+  --color-primary-hover: #b8941f;
+  --color-accent: #ffd700;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a8a8a8;
+  --color-success: #50c878;
+  --color-warning: #ff8c00;
+  --color-error: #dc143c;
+}
+
+/* 9. ANIME - Paleta Vibrante Manga */
+[data-theme="anime"] {
+  --color-background: #fff0f5;
+  --color-surface: #ffffff;
+  --color-card: #ffe4f0;
+  --color-border: #ffc0e0;
+  --color-primary: #ff1493;
+  --color-primary-hover: #db0a7a;
+  --color-accent: #00bfff;
+  --color-text: #2d1b4e;
+  --color-text-muted: #7c3aed;
+  --color-success: #10b981;
+  --color-warning: #fbbf24;
+  --color-error: #f43f5e;
+}
+
+/* 10. ARCHITECT - Paleta Blueprint Azul Técnico */
+[data-theme="architect"] {
+  --color-background: #0a1628;
+  --color-surface: #132f4c;
+  --color-card: #1e4976;
+  --color-border: #2e5984;
+  --color-primary: #5eb3f6;
+  --color-primary-hover: #4a9de5;
+  --color-accent: #90caf9;
+  --color-text: #e3f2fd;
+  --color-text-muted: #90caf9;
+  --color-success: #66bb6a;
+  --color-warning: #ffa726;
+  --color-error: #ef5350;
+}
+
+/* ========================================
+   APLICACIÓN GLOBAL DE VARIABLES
+   ======================================== */
+
+:root {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-card: var(--color-card);
+  --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-accent: var(--color-accent);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+}
+
+/* Aplicar colores a elementos base */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.bg-background { background-color: var(--color-background) !important; }
+.bg-surface { background-color: var(--color-surface) !important; }
+.bg-card { background-color: var(--color-card) !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-accent { background-color: var(--color-accent) !important; }
+
+.text-foreground { color: var(--color-text) !important; }
+.text-muted-foreground { color: var(--color-text-muted) !important; }
+.text-primary { color: var(--color-primary) !important; }
+
+.border-border { border-color: var(--color-border) !important; }
+.border-primary { border-color: var(--color-primary) !important; }

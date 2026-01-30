@@ -184,6 +184,7 @@ export function CategorySidebar({
         <AuthModal
           isOpen={isAuthModalOpen}
           onClose={() => setIsAuthModalOpen(false)}
+          onLoginSuccess={() => console.log('Login successful')}
         />
         <ProfileModal
           isOpen={isProfileModalOpen}

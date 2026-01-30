@@ -27,6 +27,7 @@ export default function HomePage() {
     models: ["llama-3.3-70b-versatile"],
     isActive: true,
   });
+  const [agentInstructions, setAgentInstructions] = useState<Record<string, string>>({});
 
   return (
     <div className="min-h-screen bg-background">
@@ -76,7 +77,9 @@ export default function HomePage() {
             model={model}
             apiConfig={apiConfig}
             onAgentModelChange={(agent, newModel) => setModel(newModel)}
-            onProvidersChange={() => {}}
+            agentInstructions={agentInstructions}
+            onAgentInstructionsChange={(agentId, instructions) => setAgentInstructions(prev => ({...prev, [agentId]: instructions}))}
+            onShowAgentDetails={() => {}}
           />
         </div>
       </main>
@@ -85,7 +88,6 @@ export default function HomePage() {
       <AppSettings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
-        providers={[apiConfig]}
         onProvidersChange={() => {}}
       />
     </div>

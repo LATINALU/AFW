@@ -67,8 +67,9 @@ export default function MobilePage() {
   const [apiConfig, setApiConfig] = useState<ApiProvider>(DEFAULT_API_CONFIG);
   const [tasksOpen, setTasksOpen] = useState(false);
   const [agentsOpen, setAgentsOpen] = useState(false);
+  const [memoryOpen, setMemoryOpen] = useState(false);
   const [quickStartOpen, setQuickStartOpen] = useState(false);
-  const [activeView, setActiveView] = useState<'agents' | 'tasks' | null>(null);
+  const [activeView, setActiveView] = useState<'agents' | 'tasks' | 'memory' | null>(null);
 
   const handleAgentToggle = (agentId: string) => {
     setSelectedAgents(prev => {
@@ -214,6 +215,10 @@ export default function MobilePage() {
         onOpenAgents={() => {
           setIsSidebarOpen(true);
           setActiveView('agents');
+        }}
+        onOpenMemory={() => {
+          setMemoryOpen(true);
+          setActiveView('memory');
         }}
         onOpenTasks={() => {
           setTasksOpen(true);

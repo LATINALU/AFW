@@ -74,7 +74,8 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
-      - NEXT_PUBLIC_API_URL=http://${AFW_DOMAIN:-afw-app.duckdns.org}
+      - BACKEND_URL=http://afw-backend:8001
+      - NEXT_PUBLIC_WS_URL=ws://${AFW_DOMAIN:-afw-app.duckdns.org}/ws
       - NEXT_PUBLIC_VERSION=${NEXT_PUBLIC_VERSION:-1.0.0}
       - NEXT_PUBLIC_DEMO_MODE=${NEXT_PUBLIC_DEMO_MODE:-false}
     depends_on:

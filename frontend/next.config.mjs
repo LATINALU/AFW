@@ -3,10 +3,8 @@ const nextConfig = {
   output: 'standalone',
   async rewrites() {
     // El proxy Next.js se ejecuta dentro del contenedor Docker
-    // por lo que debe usar el nombre del servicio Docker
-    const apiUrl = process.env.NODE_ENV === 'production' 
-      ? 'http://backend:8001'  // Dentro de Docker
-      : 'http://localhost:8001';  // Desarrollo local
+    // Usa el nombre del servicio Docker definido en docker-compose.afw.yml
+    const apiUrl = process.env.BACKEND_URL || 'http://afw-backend:8001';
     
     return [
       {

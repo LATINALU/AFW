@@ -308,7 +308,9 @@ export function StreamingChatV2({
 
   const connectWebSocket = useCallback(() => {
     const token = localStorage.getItem("afw_ws_token") || localStorage.getItem("afw_token");
-    const wsUrl = `ws://${window.location.hostname}:8001/ws/${clientIdRef.current}${token ? `?token=${token}` : ""}`;
+    // Usar el mismo host/puerto que la página actual - el proxy de Nginx/Next.js manejará el WebSocket
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${window.location.host}/ws/${clientIdRef.current}${token ? `?token=${token}` : ""}`;
 
     try {
       const ws = new WebSocket(wsUrl);

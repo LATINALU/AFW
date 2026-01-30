@@ -158,7 +158,9 @@ export function StreamingChat({
   }, [responses, currentAgent]);
 
   const connectWebSocket = useCallback(() => {
-    const wsUrl = `ws://${window.location.hostname}:8001/ws/${clientIdRef.current}`;
+    // Usar el mismo host/puerto que la página actual - el proxy manejará el WebSocket
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${window.location.host}/ws/${clientIdRef.current}`;
     
     try {
       const ws = new WebSocket(wsUrl);

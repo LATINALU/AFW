@@ -1,6 +1,7 @@
 "use client";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
+// API_URL solo se usa para WebSocket - las peticiones HTTP usan rutas relativas
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 // ============================================================================
 // TIPOS AFW v0.5.0 - 120 Agentes en 12 Categorías
@@ -49,7 +50,8 @@ export const fetchWithAuth = async (endpoint: string, options: RequestInit = {})
         ...options.headers,
     };
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    // Usar rutas relativas - Next.js proxy manejará el reenvío al backend
+    const response = await fetch(endpoint, {
         ...options,
         headers,
     });
@@ -145,7 +147,7 @@ export interface ConversationMessagesResponse {
  * Get conversations for a client
  */
 export const getConversations = async (clientId: string, limit = 50, offset = 0): Promise<ConversationsResponse> => {
-    const response = await fetch(`${API_URL}/api/chat/conversations?client_id=${clientId}&limit=${limit}&offset=${offset}`);
+    const response = await fetch(`/api/chat/conversations?client_id=${clientId}&limit=${limit}&offset=${offset}`);
     return response.json();
 };
 
@@ -153,7 +155,7 @@ export const getConversations = async (clientId: string, limit = 50, offset = 0)
  * Get a specific conversation with messages
  */
 export const getConversation = async (conversationId: string): Promise<ConversationMessagesResponse> => {
-    const response = await fetch(`${API_URL}/api/chat/conversations/${conversationId}`);
+    const response = await fetch(`/api/chat/conversations/${conversationId}`);
     return response.json();
 };
 
@@ -161,7 +163,7 @@ export const getConversation = async (conversationId: string): Promise<Conversat
  * Delete a conversation
  */
 export const deleteConversation = async (conversationId: string): Promise<{ success: boolean }> => {
-    const response = await fetch(`${API_URL}/api/chat/conversations/${conversationId}`, {
+    const response = await fetch(`/api/chat/conversations/${conversationId}`, {
         method: 'DELETE'
     });
     return response.json();
@@ -171,7 +173,7 @@ export const deleteConversation = async (conversationId: string): Promise<{ succ
  * Archive a conversation
  */
 export const archiveConversation = async (conversationId: string, archived = true): Promise<{ success: boolean }> => {
-    const response = await fetch(`${API_URL}/api/chat/conversations/${conversationId}/archive?archived=${archived}`, {
+    const response = await fetch(`/api/chat/conversations/${conversationId}/archive?archived=${archived}`, {
         method: 'POST'
     });
     return response.json();
@@ -181,7 +183,7 @@ export const archiveConversation = async (conversationId: string, archived = tru
  * Update conversation title
  */
 export const updateConversationTitle = async (conversationId: string, title: string): Promise<{ success: boolean }> => {
-    const response = await fetch(`${API_URL}/api/chat/conversations/${conversationId}/title?title=${encodeURIComponent(title)}`, {
+    const response = await fetch(`/api/chat/conversations/${conversationId}/title?title=${encodeURIComponent(title)}`, {
         method: 'PUT'
     });
     return response.json();
@@ -191,6 +193,9 @@ export const updateConversationTitle = async (conversationId: string, title: str
  * Search conversations
  */
 export const searchConversations = async (clientId: string, query: string, limit = 20): Promise<{ success: boolean; results: Conversation[]; total: number }> => {
-    const response = await fetch(`${API_URL}/api/chat/search?client_id=${clientId}&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const response = await fetch(`/api/chat/search?client_id=${clientId}&q=${encodeURIComponent(query)}&limit=${limit}`);
     return response.json();
 };
+
+// Exportar API_URL para WebSocket (necesita URL absoluta)
+export { API_URL };

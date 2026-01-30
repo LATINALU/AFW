@@ -590,14 +590,25 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                 
                 # Validar y sanitizar datos de entrada
                 message = data.get("message", "")
-                print(f"📝 Message: {message[:100]}...")
+                print(f"📝 Message length: {len(message)} chars, preview: {message[:100]}...")
                 
-                if not message or len(message) > 10000:
+                # Validar mensaje vacío
+                if not message or not message.strip():
                     await manager.send_json(session_id, {
                         "type": "error",
-                        "message": "Mensaje inválido o demasiado largo"
+                        "message": "El mensaje no puede estar vacío"
                     })
                     continue
+                
+                # Truncar mensajes muy largos con advertencia
+                MAX_MESSAGE_LENGTH = 10000
+                if len(message) > MAX_MESSAGE_LENGTH:
+                    print(f"⚠️ Message too long ({len(message)} chars), truncating to {MAX_MESSAGE_LENGTH}")
+                    message = message[:MAX_MESSAGE_LENGTH]
+                    await manager.send_json(session_id, {
+                        "type": "warning",
+                        "message": f"⚠️ Mensaje truncado a {MAX_MESSAGE_LENGTH} caracteres (original: {len(data.get('message', ''))} caracteres)"
+                    })
                 
                 # Sanitizar mensaje
                 message = SecurityValidator.sanitize_text(message)

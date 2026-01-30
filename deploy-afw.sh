@@ -43,8 +43,9 @@ docker-compose -f docker-compose.afw.yml ps
 echo "🏥 Testing backend health..."
 curl -f http://localhost:${AFW_BACKEND_PORT:-8002}/api/health || echo "⚠️  Backend health check failed"
 
-# Test frontend
+# Test frontend (wait longer for production build)
 echo "🎨 Testing frontend..."
+sleep 20
 curl -f http://localhost:${AFW_FRONTEND_PORT:-3002} || echo "⚠️  Frontend check failed"
 
 echo ""
